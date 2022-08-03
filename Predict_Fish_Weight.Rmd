@@ -19,8 +19,8 @@ require(tidyverse)
 
 Fish = read.csv("Fish.csv")
 Perch = filter(Fish, Species == 'Perch')
-Pike = filter(Fish, species == "Pike")
-Roach = filter(Fish, species == "Roach")
+Pike = filter(Fish, Species == 'Pike')
+Roach = filter(Fish, Species == 'Roach')
 ```
 
 # Predicting Fish Weight
@@ -54,8 +54,8 @@ From this graph I see that the best two predictors of wt for Perch are Length3 a
 ```{r}
 library(leaps)
 regsubsets.out <-
-  regsubsets(Weight ~ Length1 + Length2 + Length3 + Height, data = Perch,
-             nbest = 4,    # 1 best model for each number of predictors
+  regsubsets(Weight ~ Length1 + Length2 + Length3 + Height, data = Pike,
+             nbest = 1,    # 1 best model for each number of predictors
              nvmax = NULL, # Null for no limit on number of variables
              force.in = NULL, force.out = NULL,
              method = "exhaustive")
@@ -72,22 +72,66 @@ as.data.frame(summary.out$outmat)
 ### Best Models
 
 
-The best model for this case uses all four vaiables 
+The best model for this case uses all four variables 
 
 
 ### Best Two regressor model
 
 From the graph the best two-parameter regressor model is based on Length3 and Height
+
+
 ## Pike
+
+```{r}
+library(leaps)
+regsubsets.out <-
+  regsubsets(Weight ~ Length1 + Length2 + Length3 + Height, data = Pike,
+             nbest = 4,    # 1 best model for each number of predictors
+             nvmax = NULL, # Null for no limit on number of variables
+             force.in = NULL, force.out = NULL,
+             method = "exhaustive")
+regsubsets.out
+```
+```{r}
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+```
 
 ### Best Models
 
+The best model for this case uses all four variables
+
 ### Best Two regressor model
+
+From the graph the best two-parameter regressor model is based on Length3 and Height
 
 ## Roach
 
+```{r}
+library(leaps)
+regsubsets.out <-
+  regsubsets(Weight ~ Length1 + Length2 + Length3 + Height + Width, data = Roach,
+             nbest = 5,    # 1 best model for each number of predictors
+             nvmax = NULL, # Null for no limit on number of variables
+             force.in = NULL, force.out = NULL,
+             method = "exhaustive")
+regsubsets.out
+```
+
+```{r}
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+```
+
+
 ### Best Models
+
+The best model for this case uses all five variables
 
 ### Best Two regressor model
 
+From the graph the best two-parameter regressor model is based on Length3 and Height
+
 ## Final Summary Statements
+
+Using all four variables is the best model for all the species of fish
