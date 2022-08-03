@@ -16,19 +16,68 @@ output:
 ```{r include=FALSE,echo=FALSE}
 require(tigerstats)
 require(tidyverse)
+
+Fish = read.csv("Fish.csv")
+Perch = filter(Fish, Species == 'Perch')
+Pike = filter(Fish, species == "Pike")
+Roach = filter(Fish, species == "Roach")
 ```
 
 # Predicting Fish Weight
 
+```{r}
+
+pwt = lm(Weight~ Length1+ Length2+ Length3+ Height, data = Perch)
+summary(pwt)
+```
+```{r}
+library(leaps)
+regsubsets.out <-
+  regsubsets(Weight ~ Length1 + Length2 + Length3 + Height, data = Perch,
+             nbest = 4,    # 1 best model for each number of predictors
+             nvmax = NULL, # Null for no limit on number of variables
+             force.in = NULL, force.out = NULL,
+             method = "exhaustive")
+regsubsets.out
+```
+
+```{r}
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+```
+
+From this graph I see that the best two predictors of wt for Perch are Length3 and Height
 
 
 ## Perch
 
+```{r}
+library(leaps)
+regsubsets.out <-
+  regsubsets(Weight ~ Length1 + Length2 + Length3 + Height, data = Perch,
+             nbest = 4,    # 1 best model for each number of predictors
+             nvmax = NULL, # Null for no limit on number of variables
+             force.in = NULL, force.out = NULL,
+             method = "exhaustive")
+regsubsets.out
+```
+
+```{r}
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+```
+
+
+
 ### Best Models
+
+
+The best model for this case uses all four vaiables 
+
 
 ### Best Two regressor model
 
-
+From the graph the best two-parameter regressor model is based on Length3 and Height
 ## Pike
 
 ### Best Models
